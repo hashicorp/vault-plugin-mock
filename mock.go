@@ -9,7 +9,3 @@ import (
 const (
 	MOCK = "This is a mock module to test plugin integration with Vault."
 )
-
-func main() {
-	fmt.Println(MOCK)
-}
