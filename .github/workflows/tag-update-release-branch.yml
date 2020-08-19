@@ -9,7 +9,7 @@ on:
 
 jobs:
   minor-tag:
-    if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
+    if: startsWith(github.event.base_ref,'refs/heads/release/') != false
     runs-on: ubuntu-latest
     steps:
     - name: Get the base branch
@@ -31,19 +31,7 @@ jobs:
         repository: sarahethompson/vault
         token: ${{ secrets.SARAH_ACTIONS_PAT }}
         path: vault
-    - name: Update go.mod and push changes master (minor bump)
-      if: github.event.base_ref == 'refs/heads/master'
-      env:
-        GOPRIVATE: "github.com/hashicorp/*"
-        GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
-        VERSION: ${{ steps.get_version.outputs.VERSION }}
-        ACTOR: ${{ github.actor }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      working-directory: vault
-      run: |
-        ../main/.github/scripts/update-vault.sh "master" "@latest"
     - name: Update go.mod and push changes rel branch/master (patch bump)
-      if: startsWith(github.event.base_ref,'refs/heads/release/') != false
       env:
         GOPRIVATE: "github.com/hashicorp/*"
         GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
@@ -53,7 +41,6 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       working-directory: vault
       run: |
-        ../main/.github/scripts/update-vault.sh "master" "@latest"
         ../main/.github/scripts/update-vault.sh "$BRANCH" "@$BRANCH"
     - name: Slack failure
       uses: act10ns/slack@v1
