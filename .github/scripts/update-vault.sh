@@ -30,7 +30,7 @@ json='
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "<'$command'|PR on Vault> successfully created! ('$GITHUB_REPOSITORY' version: '$VERSION')"
+				"text": "<'$command'|PR on Vault '$branch'> successfully created! ('$GITHUB_REPOSITORY' version: '$VERSION')"
 			}
 		}
 	]
