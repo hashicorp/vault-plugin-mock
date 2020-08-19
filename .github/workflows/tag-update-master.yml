@@ -31,12 +31,15 @@ jobs:
         repository: sarahethompson/vault
         token: ${{ secrets.SARAH_ACTIONS_PAT }}
         path: vault
+    - uses: Dovyski/payload-info-action@master
+      with:
+        dump: true
     - name: Update go.mod and push changes master (minor bump)
       env:
         GOPRIVATE: "github.com/hashicorp/*"
         GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
         VERSION: ${{ steps.get_version.outputs.VERSION }}
-        ACTOR: ${{ github.actor }}
+        ACTOR: ${{ github.event.commits[].author }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       working-directory: vault
       run: |
