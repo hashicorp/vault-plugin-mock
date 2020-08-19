@@ -20,6 +20,10 @@ jobs:
     - name: Get the tag version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - name: Checkout Plugin
+      uses: actions/checkout@v2
+      with:
+        path: main
     - name: Checkout Vault
       uses: actions/checkout@v2
       with:
@@ -37,7 +41,7 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       working-directory: vault
       run: |
-        ../.github/scripts/update-vault.sh "master" "@latest"
+        ../main/.github/scripts/update-vault.sh "master" "@latest"
     - name: Update go.mod and push changes rel branch/master (patch bump)
       if: startsWith(github.event.base_ref,'refs/heads/release/') != false
       env:
@@ -49,8 +53,8 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       working-directory: vault
       run: |
-        ../.github/scripts/update-vault.sh "master" "@latest"
-        ../.github/scripts/update-vault.sh "$BRANCH" "@$BRANCH"
+        ../main/.github/scripts/update-vault.sh "master" "@latest"
+        ../main/.github/scripts/update-vault.sh "$BRANCH" "@$BRANCH"
 
   notifications:
     runs-on: ubuntu-latest
