@@ -30,7 +30,7 @@ jobs:
       if: steps.version-bump.outputs.new_tag != ''
       env:
         NEW_TAG: ${{ steps.version-bump.outputs.new_tag }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
         SLACK_AVATAR: repository
     - name: Slack failure
       uses: act10ns/slack@v1
