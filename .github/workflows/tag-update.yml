@@ -1,0 +1,66 @@
+# This is a basic workflow to help you get started with Actions
+
+name: tag-update-flow
+
+on:
+  push:
+    tags:        
+      - 'v*'
+
+jobs:
+  minor-tag:
+    if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get the base branch
+      env:
+        BASE_BRANCH: ${{ github.event.base_ref }}
+      id: get_branch
+      run: echo ::set-output name=BRANCH::${BASE_BRANCH/refs\/heads\//}
+    - name: Get the tag version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    - name: Checkout Vault
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ steps.get_branch.outputs.BRANCH }}
+        repository: sarahethompson/vault
+        token: ${{ secrets.SARAH_ACTIONS_PAT }}
+        path: vault
+    - name: Update go.mod and push changes master (minor bump)
+      if: github.event.base_ref == 'refs/heads/master'
+      env:
+        GOPRIVATE: "github.com/hashicorp/*"
+        GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+        ACTOR: ${{ github.actor }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      working-directory: vault
+      run: |
+        ../.github/scripts/update-vault.sh "master" "@latest"
+    - name: Update go.mod and push changes rel branch/master (patch bump)
+      if: startsWith(github.event.base_ref,'refs/heads/release/') != false
+      env:
+        GOPRIVATE: "github.com/hashicorp/*"
+        GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+        BRANCH: ${{ steps.get_branch.outputs.BRANCH }}
+        ACTOR: ${{ github.actor }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      working-directory: vault
+      run: |
+        ../.github/scripts/update-vault.sh "master" "@latest"
+        ../.github/scripts/update-vault.sh "$BRANCH" "@$BRANCH"
+
+  notifications:
+    runs-on: ubuntu-latest
+    needs: minor-tag
+    steps:
+    - name: Slack failure
+      uses: act10ns/slack@v1
+      id: slack-failure
+      if: failure()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        status: ${{ job.status }}   

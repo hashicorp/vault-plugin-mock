@@ -1,0 +1,42 @@
+name: Bump version
+on:
+  push:
+    branches:
+      - master
+      - 'release/*'
+jobs:
+  bump-plugin-version:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      id: checkout
+      uses: actions/checkout@master
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      id: version-bump
+      uses: sarahethompson/github-tag-action@fix-default-bump-none
+      env:
+        GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
+        WITH_V: true
+        DEFAULT_BUMP: none
+        TAG_CONTEXT: branch
+        RELEASE_BRANCHES: release/.*,master
+    - name: Slack tag creation
+      id: slack-tag
+      uses: Ilshidur/action-slack@master
+      with:
+        args: 'A new tag has been pushed - {{ NEW_TAG }} - https://github.com/{{ EVENT_PAYLOAD.repository.full_name }}/tags.'
+      if: steps.version-bump.outputs.new_tag != ''
+      env:
+        NEW_TAG: ${{ steps.version-bump.outputs.new_tag }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_AVATAR: repository
+    - name: Slack failure
+      uses: act10ns/slack@v1
+      id: slack-failure
+      if: failure()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        status: ${{ job.status }}      
