@@ -39,7 +39,7 @@ jobs:
         GOPRIVATE: "github.com/hashicorp/*"
         GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
         VERSION: ${{ steps.get_version.outputs.VERSION }}
-        ACTOR: ${{ github.actor }}
+        ACTOR: ${{ github.head_commit.author.username }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       working-directory: vault
       run: |
