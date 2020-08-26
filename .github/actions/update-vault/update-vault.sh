@@ -21,7 +21,7 @@ echo "$git_remote"
 if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   git add .
   git commit -m "Updating $GITHUB_REPOSITORY deps"
-  command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "$UPDATE_REPO:$branch" \
+  command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "$git_remote:$branch" \
   -h "$git_remote:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
   -l "plugin-update" -a "$ACTOR" -p | tail -1) || return 1
   echo "$command"
