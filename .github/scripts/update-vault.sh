@@ -26,18 +26,18 @@ else
   text="No PR created on Vault '$branch' ('$GITHUB_REPOSITORY' version: '$VERSION') as this module version bump does not result in an update to go.mod. Please check."
 fi
 
-json="
+json='
 {
-  'blocks': [
+  "blocks": [
     {
-      'type': 'section',
-      'text': {
-        'type': 'mrkdwn',
-        'text': '$text'
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "'$text'"
       }
     }
   ]
-}"
+}'
 
 echo "$json" | curl -X POST -H "Content-type: application/json; charset=utf-8" \
 --data @- \
