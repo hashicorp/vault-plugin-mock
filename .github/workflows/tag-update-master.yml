@@ -12,11 +12,6 @@ jobs:
     if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
     runs-on: ubuntu-latest
     steps:
-    - name: Get the base branch
-      env:
-        BASE_BRANCH: ${{ github.event.base_ref }}
-      id: get_branch
-      run: echo ::set-output name=BRANCH::${BASE_BRANCH/refs\/heads\//}
     - name: Get the tag version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -27,7 +22,6 @@ jobs:
     - name: Checkout Vault
       uses: actions/checkout@v2
       with:
-        ref: ${{ steps.get_branch.outputs.BRANCH }}
         repository: sarahethompson/vault
         token: ${{ secrets.SARAH_ACTIONS_PAT }}
         path: vault
