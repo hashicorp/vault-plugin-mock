@@ -4,6 +4,10 @@ set -euo pipefail
 branch=$1
 semvar_bump=$2
 
+git_remote=$(git remote get-url origin | cut -f2 -d":")
+git_remote=${git_remote%".git"}
+echo "$git_remote"
+
 git config user.name github-actions
 git config user.email github-actions@github.com
 git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
@@ -13,10 +17,6 @@ go get github.com/"$GITHUB_REPOSITORY$semvar_bump"
 go mod tidy
 rm -rf vendor
 go mod vendor
-
-git_remote=$(git remote get-url origin | cut -f2 -d":")
-git_remote=${git_remote%".git"}
-echo "$git_remote"
 
 if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   git add .
