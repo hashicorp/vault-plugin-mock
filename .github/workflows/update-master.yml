@@ -37,6 +37,7 @@ jobs:
       with:
         branch: 'master'
         update-strategy: '@latest'
+        working-directory: 'vault'
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure

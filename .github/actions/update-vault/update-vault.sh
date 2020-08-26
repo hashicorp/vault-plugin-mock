@@ -9,16 +9,20 @@ git config user.email github-actions@github.com
 git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 git checkout -b update-"$GITHUB_REPOSITORY"-"$VERSION"-"$(date +%s)"
 
-go get github.com/hashicorp/vault-plugin-mock"$semvar_bump"
+go get github.com/"$GITHUB_REPOSITORY-$semvar_bump"
 go mod tidy
 rm -rf vendor
 go mod vendor
 
+git_remote=$(git remote get-url origin | cut -f2 -d":")
+git_remote=${git_remote%".git"}
+echo "$git_remote"
+
 if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   git add .
   git commit -m "Updating $GITHUB_REPOSITORY deps"
-  command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "sarahethompson/vault:$branch" \
-  -h "sarahethompson/vault:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
+  command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "$UPDATE_REPO:$branch" \
+  -h "$git_remote:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
   -l "plugin-update" -a "$ACTOR" -p | tail -1) || return 1
   echo "$command"
   text="<$command|PR on Vault $branch> successfully created! ($GITHUB_REPOSITORY version: $VERSION) and assigned to $ACTOR"

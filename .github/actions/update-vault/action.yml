@@ -2,17 +2,21 @@ name: 'Update module version'
 description: 'Update plugin module version in Vault'
 inputs:
   branch:  # id of input
-    description: 'Vault branch to checkout'
+    description: 'Vault branch to checkout.'
     required: true
     default: 'master'
   update-strategy:  # id of input
-    description: 'How to update the go module'
+    description: 'How to update the go module.'
     required: true
     default: '@latest'
+  working-directory:
+    description: 'Overwrite working directory if needed.'
+    required: true
+    default: ${{ github.workspace }
 runs:
   using: "composite"
-  steps: 
+  steps:
     - name: Update go.mod and create PR with changes
       shell: bash
-      working-directory: vault
+      working-directory: ${{ inputs.working-directory }}
       run: ${{ github.action_path }}/update-vault.sh ${{ inputs.branch }} ${{ inputs.update-strategy }}

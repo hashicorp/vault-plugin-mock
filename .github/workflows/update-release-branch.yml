@@ -40,6 +40,7 @@ jobs:
       with:
         branch: ${{ steps.get_branch.outputs.BRANCH }}
         update-strategy: "@${{ steps.get_branch.outputs.BRANCH }}"
+        working-directory: 'vault'
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure
