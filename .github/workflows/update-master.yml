@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: tag-update-release-flow
+name: update-master-flow
 
 on:
   push:
@@ -9,14 +7,9 @@ on:
 
 jobs:
   minor-tag:
-    if: startsWith(github.event.base_ref,'refs/heads/release/') != false
+    if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
     runs-on: ubuntu-latest
     steps:
-    - name: Get the base branch
-      env:
-        BASE_BRANCH: ${{ github.event.base_ref }}
-      id: get_branch
-      run: echo ::set-output name=BRANCH::${BASE_BRANCH/refs\/heads\//}
     - name: Get the tag version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -27,21 +20,23 @@ jobs:
     - name: Checkout Vault
       uses: actions/checkout@v2
       with:
-        ref: ${{ steps.get_branch.outputs.BRANCH }}
         repository: sarahethompson/vault
         token: ${{ secrets.SARAH_ACTIONS_PAT }}
         path: vault
-    - name: Update go.mod and push changes rel branch/master (patch bump)
+    - uses: Dovyski/payload-info-action@master
+      with:
+        dump: true
+    - uses: ./main/.github/actions/update-vault
+      id: update-vault
       env:
         GOPRIVATE: "github.com/hashicorp/*"
         GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
         VERSION: ${{ steps.get_version.outputs.VERSION }}
-        BRANCH: ${{ steps.get_branch.outputs.BRANCH }}
         ACTOR: ${{ github.event.head_commit.author.username }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      working-directory: vault
-      run: |
-        ../main/.github/scripts/update-vault.sh "$BRANCH" "@$BRANCH"
+      with:
+        branch: 'master'
+        update-strategy: '@latest'
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure

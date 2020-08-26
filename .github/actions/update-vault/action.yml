@@ -1,0 +1,18 @@
+name: 'Update module version'
+description: 'Update plugin module version in Vault'
+inputs:
+  branch:  # id of input
+    description: 'Vault branch to checkout'
+    required: true
+    default: 'master'
+  update-strategy:  # id of input
+    description: 'How to update the go module'
+    required: true
+    default: '@latest'
+runs:
+  using: "composite"
+  steps: 
+    - name: Update go.mod and create PR with changes
+      shell: bash
+      working-directory: vault
+      run: ${{ github.action_path }}/update-vault.sh ${{ inputs.branch }} ${{ inputs.update-strategy }}
