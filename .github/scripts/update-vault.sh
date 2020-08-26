@@ -14,28 +14,31 @@ go mod tidy
 rm -rf vendor
 go mod vendor
 
-git add .
-git commit --allow-empty -m "Updating $GITHUB_REPOSITORY deps"
+if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
+  git add .
+  git commit -m "Updating $GITHUB_REPOSITORY deps"
+  command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "sarahethompson/vault:$branch" \
+  -h "sarahethompson/vault:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
+  -l "plugin-update" -a "$ACTOR" -p | tail -1) || return 1
+  echo "$command"
+  text="<'$command'|PR on Vault '$branch'> successfully created! ('$GITHUB_REPOSITORY' version: '$VERSION') and assigned to '$ACTOR'"
+else
+  text="No PR created on Vault '$branch' ('$GITHUB_REPOSITORY' version: '$VERSION') as this module version bump does not result in an update to go.mod. Please check."
+fi
 
-command=$(hub pull-request -m "Update version of $GITHUB_REPOSITORY." -b "sarahethompson/vault:$branch" \
--h "sarahethompson/vault:update-$GITHUB_REPOSITORY-$VERSION-$(date +%s)" \
--l "plugin-update" -a "$ACTOR" -p | tail -1) || return 1
-
-echo "$command"
-
-json='
+json="
 {
-	"blocks": [
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "<'$command'|PR on Vault '$branch'> successfully created! ('$GITHUB_REPOSITORY' version: '$VERSION') and assigned to '$ACTOR'"
-			}
-		}
-	]
-}'
+  'blocks': [
+    {
+      'type': 'section',
+      'text': {
+        'type': 'mrkdwn',
+        'text': '$text'
+      }
+    }
+  ]
+}"
 
-echo $json | curl -X POST -H "Content-type: application/json; charset=utf-8" \
+echo "$json" | curl -X POST -H "Content-type: application/json; charset=utf-8" \
 --data @- \
-$SLACK_WEBHOOK_URL
+"$SLACK_WEBHOOK_URL";
