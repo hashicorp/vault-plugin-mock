@@ -20,6 +20,7 @@ jobs:
     - name: Checkout Vault
       uses: actions/checkout@v2
       with:
+        fetch-depth: 0
         repository: sarahethompson/vault
         token: ${{ secrets.SARAH_ACTIONS_PAT }}
         path: vault
