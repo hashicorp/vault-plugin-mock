@@ -1,0 +1,22 @@
+name: 'Update module version'
+description: 'Update plugin module version in target repo.'
+inputs:
+  branch:  # id of input
+    description: 'Branch of target repo to checkout.'
+    required: true
+    default: 'master'
+  update-strategy:  # id of input
+    description: 'How to update the go module.'
+    required: true
+    default: '@latest'
+  working-directory:
+    description: 'Overwrite working directory if needed.'
+    required: true
+    default: ${{ github.workspace }}
+runs:
+  using: "composite"
+  steps:
+    - name: Update go.mod + vendor dir and create PR with changes.
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: ${{ github.action_path }}/update-mod.sh ${{ inputs.branch }} ${{ inputs.update-strategy }}
