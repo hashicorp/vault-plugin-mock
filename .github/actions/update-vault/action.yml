@@ -12,7 +12,7 @@ inputs:
   working-directory:
     description: 'Overwrite working directory if needed.'
     required: true
-    default: ${{ github.workspace }
+    default: ${{ github.workspace }}
 runs:
   using: "composite"
   steps:
