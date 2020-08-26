@@ -23,7 +23,7 @@ if [ -n "$(git status --untracked-files=no --porcelain)" ]; then
   echo "$command"
   text="<$command|PR on Vault $branch> successfully created! ($GITHUB_REPOSITORY version: $VERSION) and assigned to $ACTOR"
 else
-  text="No PR created on Vault $branch ($GITHUB_REPOSITORY version: $VERSION) as this module version bump does not result in an update to go.mod. Please check."
+  text="No PR created on Vault $branch ($GITHUB_REPOSITORY version: $VERSION) as this module version bump does not result in an update to go.mod. Please double check."
 fi
 
 json='
