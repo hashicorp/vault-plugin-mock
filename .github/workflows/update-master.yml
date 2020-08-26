@@ -7,7 +7,7 @@ on:
 
 jobs:
   minor-tag:
-    if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
+    if: github.event.base_ref == 'refs/heads/test-new-action' || startsWith(github.event.base_ref,'refs/heads/release/') != false
     runs-on: ubuntu-latest
     steps:
     - name: Get the tag version
