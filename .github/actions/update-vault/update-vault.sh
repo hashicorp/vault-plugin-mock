@@ -4,8 +4,8 @@ set -euo pipefail
 branch=$1
 semvar_bump=$2
 
-echo Remote is - $(git remote -v)"
-git_remote=$(git remote get-url origin | cut -f2 -d":")
+echo "Remote is - $(git remote -v)"
+git_remote=$(git config --get remote.origin.url | cut -f2 -d":")
 git_remote=${git_remote%".git"}
 echo "$git_remote"
 
