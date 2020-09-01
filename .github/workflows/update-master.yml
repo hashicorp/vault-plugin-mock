@@ -7,7 +7,7 @@ on:
 
 jobs:
   minor-tag:
-    if: github.event.base_ref == 'refs/heads/master' || startsWith(github.event.base_ref,'refs/heads/release/') != false
+    if: github.event.base_ref == 'refs/heads/new-action' || startsWith(github.event.base_ref,'refs/heads/release/') != false
     runs-on: ubuntu-latest
     steps:
     - name: Get the tag version
@@ -17,15 +17,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: main
-    - name: Checkout Vault
-      uses: actions/checkout@v2
-      with:
-        repository: sarahethompson/vault
-        token: ${{ secrets.SARAH_ACTIONS_PAT }}
-        path: vault
-    - uses: Dovyski/payload-info-action@master
-      with:
-        dump: true
     - uses: ./main/.github/actions/update-mod-version
       id: update-vault
       env:
@@ -36,8 +27,8 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
         branch: 'master'
-        update-strategy: '@latest'
-        working-directory: 'vault'
+        update-strategy: 'latest'
+        target-repo: 'github.com/sarahethompson/vault'
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure

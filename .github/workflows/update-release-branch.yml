@@ -22,13 +22,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         path: main
-    - name: Checkout Vault
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ steps.get_branch.outputs.BRANCH }}
-        repository: sarahethompson/vault
-        token: ${{ secrets.SARAH_ACTIONS_PAT }}
-        path: vault
     - uses: ./main/.github/actions/update-mod-version
       id: update-vault
       env:
@@ -39,8 +32,8 @@ jobs:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
         branch: ${{ steps.get_branch.outputs.BRANCH }}
-        update-strategy: "@${{ steps.get_branch.outputs.BRANCH }}"
-        working-directory: 'vault'
+        update-strategy: "${{ steps.get_branch.outputs.BRANCH }}"
+        target-repo: 'github.com/sarahethompson/vault'
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure
