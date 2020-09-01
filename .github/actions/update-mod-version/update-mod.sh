@@ -18,6 +18,7 @@ git config user.email github-actions@github.com
 git config --global url."https://$GITHUB_TOKEN:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 git checkout -b update-"$GITHUB_REPOSITORY"-"$VERSION"-"$(date +%s)"
 
+#update go.mod
 go get github.com/"$GITHUB_REPOSITORY"@"$version_bump"
 go mod tidy
 rm -rf vendor
