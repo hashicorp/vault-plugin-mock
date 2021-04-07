@@ -23,7 +23,7 @@ jobs:
         DEFAULT_BUMP: none
         TAG_CONTEXT: branch
         RELEASE_BRANCHES: release/.*,master
-    - name: Slack tag creation.
+    - name: Slack tag creation
       id: slack-tag
       uses: Ilshidur/action-slack@master
       with:
