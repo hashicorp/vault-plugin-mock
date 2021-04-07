@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: hmarr/debug-action@v2
+  issuelabel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get labels name
+        run: |
+          echo ${{ github.event.label.name }}
   bump-plugin-version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
