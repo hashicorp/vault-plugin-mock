@@ -1,25 +1,11 @@
 name: Bump version
 on:
-  push:
-    branches:
+  pull_request:
+    branches: 
       - main
       - 'release/*'
-  pull_request:
-    branches: [ main ]
     types: [closed]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: hmarr/debug-action@v2
-  issuelabel:
-    runs-on: ubuntu-latest
-    steps:
-      - name: get labels name
-        env:
-          LABEL: ${{ toJSON(github) }}
-        run: |
-          echo "$LABEL"
   bump-plugin-version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
