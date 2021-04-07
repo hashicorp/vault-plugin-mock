@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: get labels name
         run: |
-          echo "${{ github.event.pull_request.labels.*.name }}"
+          echo "${{ fromJSON(github.event.pull_request.labels) }}"
   bump-plugin-version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
