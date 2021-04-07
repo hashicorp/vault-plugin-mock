@@ -16,8 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: get labels name
+        env:
+          LABEL: ${{ fromJSON(github.event.pull_request.labels) }}
         run: |
-          echo "${{ fromJSON(github.event.pull_request.labels) }}"
+          echo "$LABEL"
   bump-plugin-version:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
