@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: get labels name
         env:
-          LABEL: ${{ fromJSON(github.event.pull_request.labels) }}
+          LABEL: ${{ fromJSON(github) }}
         run: |
           echo "$LABEL"
   bump-plugin-version:
