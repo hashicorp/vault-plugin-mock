@@ -13,11 +13,7 @@ jobs:
     - name: Get the tag version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    - name: Checkout Plugin
-      uses: actions/checkout@v2
-      with:
-        path: main
-    - uses: ./main/.github/actions/update-mod-version
+    - uses: actions/go-update-mod-dependencies@v1
       id: update-vault
       env:
         GOPRIVATE: "github.com/hashicorp/*"
