@@ -18,7 +18,7 @@ jobs:
     - name: Get the tag version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-    - uses: actions/go-update-mod-dependencies@v1
+    - uses: sarahethompson/go-update-mod-dependencies@v1
       id: update-vault
       env:
         GOPRIVATE: "github.com/hashicorp/*"
