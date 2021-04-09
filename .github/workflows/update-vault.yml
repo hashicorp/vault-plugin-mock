@@ -12,6 +12,8 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
     - id: set-matrix
+      env:
+        BASE_BRANCH: ${{ github.event.base_ref }}
       run: echo "::set-output name=matrix::{\"include\":[{\"branch\":\"master\",\"update-strategy\":\"latest\"},{\"branch\":\""${BASE_BRANCH}\"",\"update-strategy\":\""${BASE_BRANCH}\""}]}"
 
   update-vault:
