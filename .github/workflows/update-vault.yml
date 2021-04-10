@@ -14,8 +14,8 @@ jobs:
       - id: set-matrix
         env:
           BASE_BRANCH: ${{ github.event.base_ref }}
-        run: |
-          echo "::set-output name=matrix::{\"include\":[{\"branch\":\"master\",\"update-strategy\":\"latest\"}, \
+        run: >
+          echo "::set-output name=matrix::{\"include\":[{\"branch\":\"master\",\"update-strategy\":\"latest\"},
           {\"branch\":\""${BASE_BRANCH/refs\/heads\//}\"",\"update-strategy\":\""${BASE_BRANCH/refs\/heads\//}\""}]}"
 
   update-vault:
