@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Checkout
       id: checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
       with:
         fetch-depth: '0'
     - name: Bump version and push tag
@@ -29,9 +29,12 @@ jobs:
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
       env:
-        SLACK_COLOR: ${{ job.status }} # or a specific color like 'green' or '#ff00ff'
+        SLACK_COLOR: ${{ job.status }}
         SLACK_ICON: https://ibb.co/jv6xRLp
-        SLACK_MESSAGE: 'Tag authorization needed for ${{ github.repository }}:${{ steps.version-bump.outputs.new_tag }}. Please approve here - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+        SLACK_MESSAGE: |
+          'Tag authorization needed for ${{ github.repository }}:${{ steps.version-bump.outputs.new_tag }}. \
+          Tag will be pushed to: ${{github.sha}} - ${{github.base_ref}} \
+          Please approve here - https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}.'
         SLACK_TITLE: Plugin Tag
         SLACK_USERNAME: vault-eco-bot
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -52,7 +55,7 @@ jobs:
     steps:
     - name: Checkout
       id: checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
       with:
         fetch-depth: '0'
     - name: Bump version and push tag
