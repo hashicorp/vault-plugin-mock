@@ -34,7 +34,7 @@ jobs:
         SLACK_MESSAGE: 'Tag authorization needed for $GITHUB_REPOSITORY:${{ steps.version-bump.outputs.new_tag }}'
         SLACK_TITLE: Plugin Tag
         SLACK_USERNAME: vault-eco-bot
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
     - name: Slack failure
       uses: act10ns/slack@v1
       id: slack-failure
