@@ -31,7 +31,7 @@ jobs:
       env:
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'green' or '#ff00ff'
         SLACK_ICON: https://ibb.co/jv6xRLp
-        SLACK_MESSAGE: 'Tag authorization needed for ${GITHUB_REPOSITORY}:${{ steps.version-bump.outputs.new_tag }}. Please approve here - https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}'
+        SLACK_MESSAGE: "Tag authorization needed for $GITHUB_REPOSITORY:${{ steps.version-bump.outputs.new_tag }}. Please approve here - https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
         SLACK_TITLE: Plugin Tag
         SLACK_USERNAME: vault-eco-bot
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -60,7 +60,7 @@ jobs:
       uses: sarahethompson/github-tag-action@fix-default-bump-none
       env:
         GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
-        CUSTOM_TAG: ${{needs.bump-plugin-version-dry-run.outputs.new}}
+        CUSTOM_TAG: ${{needs.bump-plugin-version-dry-run.outputs.new_tag}}
         RELEASE_BRANCHES: release/.*
     - name: Slack tag creation
       id: slack-tag
