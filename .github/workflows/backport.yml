@@ -11,7 +11,7 @@
       runs-on: ubuntu-latest
       container: hashicorpdev/backport-assistant:0.2.2
       steps:
-        - name: Run Backport Assistant for release branches.
+        - name: Run Backport Assistant for release branches
           run: |
             backport-assistant backport
           env:
