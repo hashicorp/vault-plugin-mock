@@ -32,7 +32,7 @@ jobs:
         id: update-vault-release-branch
         env:
           GOPRIVATE: "github.com/hashicorp/*"
-          GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
+          GITHUB_TOKEN: ${{ secrets.HC_GITHUB_TEAM_SECURE_VAULT_ECOSYSTEM_GITHUB_TOKEN }}
           VERSION: ${{ steps.get_version.outputs.VERSION }}
           ACTOR: ${{ github.event.head_commit.author.username }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
