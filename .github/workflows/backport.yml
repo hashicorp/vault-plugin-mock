@@ -15,6 +15,6 @@
           run: |
             backport-assistant backport
           env:
-            BACKPORT_LABEL_REGEXP: "backport/(?P<target>\\d+\\.\\d+\\.\\w+)"
-            BACKPORT_TARGET_TEMPLATE: "release/{{.target}}"
-            GITHUB_TOKEN: ${{ secrets.SARAH_ACTIONS_PAT }}
+            BACKPORT_LABEL_REGEXP: "backport/vault-(?P<target>\\d+\\.\\d+\\.\\w+)"
+            BACKPORT_TARGET_TEMPLATE: "release/vault-{{.target}}"
+            GITHUB_TOKEN: ${{ secrets.HC_GITHUB_TEAM_SECURE_VAULT_ECOSYSTEM_GITHUB_TOKEN }}
