@@ -38,8 +38,8 @@ jobs:
         id: import_gpg
         uses: retorquere/ghaction-import-gpg@master
         with:
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY_DECRYPTED }}
-          # passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.TEST_PASSPHRASE }}
 
       # - name: Run GoReleaser
       #   uses: goreleaser/goreleaser-action@v2
