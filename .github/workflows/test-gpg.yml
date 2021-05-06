@@ -36,7 +36,7 @@ jobs:
         run: echo -e "${{ secrets.GPG_PRIVATE_KEY_DECRYPTED }}" | gpg --import --batch --no-tty
       - name: Import GPG key
         id: import_gpg
-        uses: hashicorp/ghaction-import-gpg@upgrade-gpg-version
+        uses: crazy-max/ghaction-import-gpg@openpgp5
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
