@@ -36,7 +36,7 @@ jobs:
         run: echo -e "${{ secrets.GPG_PRIVATE_KEY_DECRYPTED }}" | gpg --import --batch --no-tty
       - name: Import GPG key
         id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@openpgp5
+        uses: retorquere/ghaction-import-gpg@master
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
