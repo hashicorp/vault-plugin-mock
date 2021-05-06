@@ -36,10 +36,11 @@ jobs:
         run: echo -e "${{ secrets.GPG_PRIVATE_KEY_DECRYPTED }}" | gpg --import --batch --no-tty
       - name: Import GPG key
         id: import_gpg
-        uses: retorquere/ghaction-import-gpg@master
-        env:
-          GPG-PRIVATE-KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        uses: sarahethompson/ghaction-import-gpg@master
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
       # - name: Run GoReleaser
       #   uses: goreleaser/goreleaser-action@v2
       #   with:
