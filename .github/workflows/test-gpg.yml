@@ -32,8 +32,8 @@ jobs:
         id: import_gpg
         uses: hashicorp/ghaction-import-gpg@v2.1.0
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.TEST_GPG_KEY }}
-          PASSPHRASE: ${{ secrets.TEST_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       # - name: Run GoReleaser
       #   uses: goreleaser/goreleaser-action@v2
       #   with:
