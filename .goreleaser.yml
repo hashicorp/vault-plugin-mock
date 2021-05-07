@@ -9,7 +9,7 @@ before:
     - go test ./...
     # As part of the release doc files are included as a separate deliverable for
     # consumption by Packer.io. To include a separate docs.zip uncomment the following command.
-    - make ci-release-docs
+    # - make ci-release-docs
 builds:
   # A separated build to run the packer-plugins-check only once for a linux_amd64 binary
   -
@@ -18,10 +18,10 @@ builds:
     hooks:
       post:
         # This will check plugin compatibility against latest version of Packer
-        - cmd: |
-            go install github.com/hashicorp/packer/cmd/packer-plugins-check@latest &&
-            packer-plugins-check -load={{ .Name }}
-          dir: "{{ dir .Path}}"
+        # - cmd: |
+        #     go install github.com/hashicorp/packer/cmd/packer-plugins-check@latest &&
+        #     packer-plugins-check -load={{ .Name }}
+        #   dir: "{{ dir .Path}}"
     flags:
       - -trimpath #removes all file system paths from the compiled executable
     ldflags:
