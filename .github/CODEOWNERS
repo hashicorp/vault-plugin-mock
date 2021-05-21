@@ -1,3 +1,4 @@
 /fake_features/            @hashicorp/vault-ecosystem
 /fake_features/feature_a/  @tomhjp
-/fake_features/feature_b/  @hashicorp/vault-ecosystem @jasonodonnell 
+/fake_features/feature_b/  @hashicorp/vault-ecosystem @jasonodonnell
+/fake_features/feature_c/  @jasonodonnell
