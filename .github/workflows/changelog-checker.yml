@@ -33,11 +33,12 @@ jobs:
             echo "Did not find a changelog entry and the 'pr/no-changelog' label was not applied. Reference - https://github.com/hashicorp/vault/pull/10363"
             exit 1
           else
-            if [[ $(grep -q 'enhancement' $changelog_files) ]]; then
+            # Don't want square brackets bc not using test
+            if $(grep -q 'enhancement' $changelog_files); then
               # "Enhancement is not a valid type of changelog entry, but it's a common mistake.
               echo "Found invalid type (enhancement) in changelog - did you mean improvement?"
               exit 1
-            elif ! [[ $(grep -q '```release-note:' $changelog_files) ]]; then
+            elif ! $(grep -q '```release-note:' $changelog_files); then
               # People often make changelog files like ```changelog:, which is incorrect.
               echo "Changelog file did not contain 'release-note' heading - check formatting."
               exit 1
