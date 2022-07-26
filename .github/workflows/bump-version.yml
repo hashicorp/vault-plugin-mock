@@ -20,7 +20,7 @@ jobs:
       id: version-bump
       uses: sarahethompson/github-tag-action@fix-default-bump-none
       env:
-        GITHUB_TOKEN: ${{ secrets.HC_GITHUB_TEAM_SECURE_VAULT_ECOSYSTEM_GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.VAULT_ECO_GITHUB_TOKEN }}
         WITH_V: true
         DRY_RUN: true
         DEFAULT_BUMP: none
@@ -62,7 +62,7 @@ jobs:
       id: version-bump
       uses: sarahethompson/github-tag-action@fix-default-bump-none
       env:
-        GITHUB_TOKEN: ${{ secrets.HC_GITHUB_TEAM_SECURE_VAULT_ECOSYSTEM_GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.VAULT_ECO_GITHUB_TOKEN }}
         CUSTOM_TAG: ${{needs.bump-plugin-version-dry-run.outputs.new_tag}}
         RELEASE_BRANCHES: release/.*
     - name: Slack tag creation
