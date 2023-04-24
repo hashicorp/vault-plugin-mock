@@ -28,7 +28,7 @@ jobs:
       - name: Get the tag version
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - uses: sarahethompson/go-update-mod-dependencies@v2
+      - uses: sarahethompson/go-update-mod-dependencies@v2 # TSCCR: no entry for repository "sarahethompson/go-update-mod-dependencies"
         id: update-vault-release-branch
         env:
           GOPRIVATE: "github.com/hashicorp/*"
@@ -41,7 +41,7 @@ jobs:
           update-strategy: ${{ matrix.update-strategy }}
           target-repo: "github.com/sarahethompson/vault"
       - name: Slack failure
-        uses: act10ns/slack@v1
+        uses: act10ns/slack@v1 # TSCCR: no entry for repository "act10ns/slack"
         id: slack-failure
         if: failure()
         env:
